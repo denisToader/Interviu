@@ -13,6 +13,14 @@ export class ContactsComponent implements OnInit {
   submitted: boolean = false;
   success: boolean = false;
 
+  firstN: string = "";
+  lastN: string = "";
+  phoneN: string = "";
+  em: string = "";
+  editIndex: any = "";
+
+  buttonName: string = ""
+
   contactsList: {firstName: string, lastName: string, phoneNumber: string, email:string}[] = [
     {
       firstName: "Popescu",
@@ -40,7 +48,12 @@ export class ContactsComponent implements OnInit {
     }
   }
 
-  add(index: Number) {
+  add() {
+    this.firstN = "";
+    this.lastN = "";
+    this.phoneN = "";
+    this.em = "";
+    this.buttonName = "Add";
     this.display="block"; 
   }
 
@@ -60,16 +73,35 @@ export class ContactsComponent implements OnInit {
       return;
     }
 
-    let i = this.contactsList.length;
-    console.log(i.toString());
+    if(this.buttonName == "Add") {
+      let i = this.contactsList.length;
+      console.log(i.toString());
 
-    let newContact: {firstName: string, lastName: string, phoneNumber: string, email:string} = {
-      firstName: firstN, lastName:lastN, phoneNumber:phoneN, email:em };
+      let newContact: {firstName: string, lastName: string, phoneNumber: string, email:string} = {
+        firstName: firstN, lastName:lastN, phoneNumber:phoneN, email:em };
 
-    this.contactsList[i] = newContact;
-    this.success = true;
-    alert("Added!");
+      this.contactsList[i] = newContact;
+      this.success = true;
+      alert("Added!");
+
+    } else {
+      this.contactsList[this.editIndex].firstName = firstN;
+      this.contactsList[this.editIndex].lastName = lastN;
+      this.contactsList[this.editIndex].phoneNumber = phoneN;
+      this.contactsList[this.editIndex].email = em;
+    }
     this.display="none";  
+  }
+
+  edit(i:Number) {
+    this.buttonName = "Save";
+    this.editIndex = i;
+    this.firstN = this.contactsList[this.editIndex].firstName;
+    this.lastN = this.contactsList[this.editIndex].lastName;
+    this.phoneN = this.contactsList[this.editIndex].phoneNumber;
+    this.em = this.contactsList[this.editIndex].email;
+    this.display = "block";
+    
   }
   
   constructor(private formBuilder: FormBuilder) { 
